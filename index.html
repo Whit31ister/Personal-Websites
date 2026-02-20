@@ -1,10 +1,92 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Whitelister</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio</title>
+<style>
+:root {
+  --bg:#0a0a0a;
+  --fg:#ffffff;
+  --muted:#aaaaaa;
+  --accent:#ffffff;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,Arial}
+body{background:var(--bg);color:var(--fg);scroll-behavior:smooth}
+header{position:fixed;top:0;width:100%;background:rgba(0,0,0,.6);backdrop-filter:blur(10px);border-bottom:1px solid #222}
+nav{display:flex;justify-content:space-between;align-items:center;padding:16px 40px}
+nav a{color:var(--fg);text-decoration:none;margin-left:20px;font-size:14px;opacity:.8;transition:.3s}
+nav a:hover{opacity:1}
+section{min-height:100vh;padding:120px 12vw 80px}
+.hero{display:flex;flex-direction:column;justify-content:center}
+.hero h1{font-size:60px;font-weight:700;letter-spacing:2px}
+.hero p{margin-top:15px;color:var(--muted);font-size:18px}
+.btn{margin-top:25px;padding:10px 22px;border:1px solid #fff;display:inline-block;transition:.3s}
+.btn:hover{background:#fff;color:#000}
+.card{border:1px solid #222;padding:20px;margin-top:25px;transition:.4s;transform:translateY(30px);opacity:0}
+.card.visible{transform:translateY(0);opacity:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+footer{text-align:center;padding:30px;border-top:1px solid #222;color:var(--muted)}
+</style>
 </head>
 <body>
-  <h1>It works.</h1>
-  <p>My GitHub Pages site is live.</p>
+<header>
+<nav>
+<div><b>whitelister</b></div>
+<div>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
+</div>
+</nav>
+</header>
+
+<section class="hero">
+<h1>Hello.</h1>
+<p>Minimal developer portfolio — C/C++ • Java • Python • Web</p>
+<a href="#projects" class="btn">View Work</a>
+</section>
+
+<section id="about">
+<h2>About Me</h2>
+<div class="card">I am a developer interested in systems programming, performance, and clean UI design. I enjoy building tools, learning low level concepts and creating minimal web experiences.</div>
+</section>
+
+<section id="skills">
+<h2>Skills & Capabilities</h2>
+<div class="grid">
+<div class="card">C / C++<br><small>Data structures, memory, algorithms</small></div>
+<div class="card">Java<br><small>OOP & application logic</small></div>
+<div class="card">Python<br><small>Scripting & automation</small></div>
+<div class="card">HTML<br><small>Semantic structure</small></div>
+<div class="card">CSS<br><small>Layout & animations</small></div>
+<div class="card">JavaScript<br><small>Interactive UI</small></div>
+</div>
+</section>
+
+<section id="projects">
+<h2>Projects</h2>
+<div class="grid">
+<div class="card">Terminal styled text editor</div>
+<div class="card">Sorting visualizer</div>
+<div class="card">Linux utilities scripts</div>
+<div class="card">Personal portfolio website</div>
+</div>
+</section>
+
+<section id="contact">
+<h2>Contact</h2>
+<div class="card">email@example.com</div>
+</section>
+
+<footer>© 2026 whitelister</footer>
+
+<script>
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})
+},{threshold:.15});
+document.querySelectorAll('.card').forEach(el=>observer.observe(el));
+</script>
 </body>
 </html>
