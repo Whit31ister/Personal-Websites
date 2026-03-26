@@ -13,7 +13,7 @@ function spawnTile(cell) {
     tile.className = 'grid-tile';
 
     // random texture
-    tile.style.backgroundImage = `url(/assets/images/tile-${rand(1,5)}.png)`;
+    tile.style.backgroundImage = `url('./assets/images/tile-${rand(1,5)}.png')`;
 
     cell.appendChild(tile);
 
