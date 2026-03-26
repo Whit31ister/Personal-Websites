@@ -8,6 +8,7 @@ import { initGridAnimation } from './animations.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initCursor();
+
     initGridZone();
     initGridAnimation();
 
