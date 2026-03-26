@@ -57,8 +57,8 @@ section { padding: 100px 48px; border-bottom: var(--border); }
 #grid-zone {
     position: absolute;
     inset: 0;
-    pointer-events: none;
-    z-index: 1;
+    pointer-events: auto;
+    z-index: 2;
 }
 .grid-zone-cell {
     position: absolute;
@@ -73,6 +73,7 @@ section { padding: 100px 48px; border-bottom: var(--border); }
             inset 0 0 10px rgba(255,255,255,0.03);
 
     backdrop-filter: blur(1px);
+    z-index:3;
 }
 .grid-cell {
     position: absolute;
@@ -85,6 +86,8 @@ section { padding: 100px 48px; border-bottom: var(--border); }
     background-size: cover;
     background-position: center;
     opacity: 0;
+    transform: translate(0,0);
+    z-index: 1;
 }
 
 /* Skills */
