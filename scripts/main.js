@@ -8,6 +8,7 @@ import { initGridAnimation } from './animations.js';
 console.log("MAIN LOADED");
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("INNIT START");
     initCursor();
 
     initGridZone();
@@ -15,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderSkills(skills);
     renderProjects(projects);
-    console.log("MAIN LOADED");
+    console.log("INNIT LOADED");
     initReveal(); // MUST be after render
 });
 
