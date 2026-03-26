@@ -26,7 +26,7 @@ function spawnTile(cell) {
         [
             // ENTER (left → center)
             { transform: 'translateX(-100%)', opacity: 1, offset: 0 },
-            { transform: 'translateX(0)',     opacity: 1, offset: 0.2 },
+            { transform: 'translateX(0)',     opacity: 1, offset: 0.3 },
 
             // HOLD
             { transform: 'translateX(0)',     opacity: 1, offset: 0.99 },
@@ -35,7 +35,7 @@ function spawnTile(cell) {
             { transform: 'translateX(100%)',  opacity: 1, offset: 1 }
         ],
         {
-            duration: 1400,
+            duration: 2000,
             easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
             fill: 'forwards'
         }
@@ -56,7 +56,7 @@ function spawnTile(cell) {
     setTimeout(() => {
         tile.remove();
         cell.dataset.busy = "false"; // ✅ unlock
-    }, 1400);
+    }, 2000);
 }
 function rand(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
