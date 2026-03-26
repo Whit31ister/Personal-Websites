@@ -53,6 +53,39 @@ section { padding: 100px 48px; border-bottom: var(--border); }
     height: 1px;
     background: var(--gray);
 }
+/* Grid zone */
+#grid-zone {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+.grid-zone-cell {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+
+    border: 1px solid rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.03);
+
+    box-shadow:
+            0 0 10px rgba(255,255,255,0.05),
+            inset 0 0 10px rgba(255,255,255,0.03);
+
+    backdrop-filter: blur(1px);
+}
+.grid-cell {
+    position: absolute;
+    overflow: hidden; /* IMPORTANT */
+}
+
+.grid-tile {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+}
 
 /* Skills */
 .skills-grid {
@@ -239,4 +272,5 @@ footer {
     align-items: center;
     border-top: var(--border);
 }
+
 footer p { font-size: 10px; letter-spacing: 2px; color: #444; text-transform: uppercase; }
