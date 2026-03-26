@@ -25,6 +25,9 @@ function spawnTile(cell) {
         { from: 'translateY(100%)', to: 'translateY(0)' },
         { from: 'translateY(-100%)', to: 'translateY(0)' }
     ];
+    if (cell.dataset.busy === "true") return;
+
+    cell.dataset.busy = "true";
 
     const dir = directions[Math.floor(Math.random() * directions.length)];
 
@@ -42,13 +45,16 @@ function spawnTile(cell) {
             { transform: dir.from, opacity: 0, offset: 1 }
         ],
         {
-            duration: 2000,
+            duration: 2200,
             easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
             fill: 'forwards'
         }
     );
     // cleanup
-    setTimeout(() => tile.remove(), 2000);
+    setTimeout(() => {
+        tile.remove();
+        cell.dataset.busy = "false"; // ✅ unlock
+    }, 2200);
 }
 function rand(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
