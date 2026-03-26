@@ -69,6 +69,9 @@ nav {
     animation: fadeUp 0.8s ease 0.4s forwards;
     z-index: 4;
     pointer-events: none;
+    text-shadow:
+            0 0 10px rgba(255,255,255,0.4),
+            0 0 30px rgba(255, 255, 255, 0.8);
 }
 .hero-name span { display: block; }
 .hero-sub {

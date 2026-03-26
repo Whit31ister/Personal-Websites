@@ -9,14 +9,14 @@ export function initGridZone() {
     // Define irregular pattern (like Render)
     const pattern = [];
 
-    const COLS = 14;   // width of rectangle
-    const ROWS = 9;   // height of rectangle
+    const COLS = 16;   // width of rectangle
+    const ROWS = 12;   // height of rectangle
 
-    const START_X = 10.5; // position (right side anchor)
-    const START_Y = 2;
+    const START_X = 6; // position (right side anchor)
+    const START_Y = -2;
 
 // controls how much edges break
-    const EDGE_NOISE = 0.6;
+    const EDGE_NOISE = 0.7;
 
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {

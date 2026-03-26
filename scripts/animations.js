@@ -13,48 +13,50 @@ function spawnTile(cell) {
     const tile = document.createElement('div');
     tile.className = 'grid-tile';
 
+    if (cell.dataset.busy === "true") return;
+    cell.dataset.busy = "true";
+    cell.innerHTML = ""; // clear old tile
+
     // random image
     tile.style.backgroundImage = `url('./assets/images/images-${rand(0,4)}.png')`;
-
     cell.appendChild(tile);
-
-    // ===== RANDOM DIRECTION =====
-    const directions = [
-        { from: 'translateX(100%)', to: 'translateX(0)' },
-        { from: 'translateX(-100%)', to: 'translateX(0)' },
-        { from: 'translateY(100%)', to: 'translateY(0)' },
-        { from: 'translateY(-100%)', to: 'translateY(0)' }
-    ];
-    if (cell.dataset.busy === "true") return;
-
-    cell.dataset.busy = "true";
-
-    const dir = directions[Math.floor(Math.random() * directions.length)];
 
     // ===== ANIMATION =====
     tile.animate(
         [
-            // ===== ENTER =====
-            { transform: dir.from, opacity: 0, offset: 0 },
-            { transform: dir.to,   opacity: 1, offset: 0.2 },
+            // ENTER (left → center)
+            { transform: 'translateX(-100%)', opacity: 1, offset: 0 },
+            { transform: 'translateX(0)',     opacity: 1, offset: 0.2 },
 
-            // ===== HOLD =====
-            { transform: dir.to,   opacity: 1, offset: 0.8 },
+            // HOLD
+            { transform: 'translateX(0)',     opacity: 1, offset: 0.99 },
 
-            // ===== EXIT (reverse) =====
-            { transform: dir.from, opacity: 0, offset: 1 }
+            // EXIT (center → right)
+            { transform: 'translateX(100%)',  opacity: 1, offset: 1 }
         ],
         {
-            duration: 2200,
+            duration: 1400,
             easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
             fill: 'forwards'
+        }
+    );
+    tile.animate(
+        [
+            { filter: 'brightness(1)', offset: 0 },
+            { filter: 'brightness(1.4)', offset: 0.3 },
+            { filter: 'brightness(1.2)', offset: 0.7 },
+            { filter: 'brightness(1)', offset: 1 }
+        ],
+        {
+            duration: 2200, // match your main animation
+            easing: 'ease-out'
         }
     );
     // cleanup
     setTimeout(() => {
         tile.remove();
         cell.dataset.busy = "false"; // ✅ unlock
-    }, 2200);
+    }, 1400);
 }
 function rand(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
