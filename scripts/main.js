@@ -5,6 +5,7 @@ import { renderProjects } from './projects.js';
 import { initReveal } from '../utils/observer.js';
 import { initGridZone } from './gridZone.js';
 import { initGridAnimation } from './animations.js';
+console.log("MAIN LOADED");
 
 document.addEventListener('DOMContentLoaded', () => {
     initCursor();
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderSkills(skills);
     renderProjects(projects);
-
+    console.log("MAIN LOADED");
     initReveal(); // MUST be after render
 });
 
