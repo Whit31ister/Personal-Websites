@@ -226,19 +226,28 @@ section.ai-scroll-section {
     height: 1px;
     background: #222;
     position: relative;
-    overflow: hidden;
+
 }
 .skill-bar-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+
     height: 100%;
-    background: var(--white);
     width: 0;
+
+    background: var(--white);
+
     transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .skill-level {
     font-size: 10px;
     color: var(--gray);
     margin-top: 8px;
 }
+
+
 
 /* Projects */
 .projects-list { display: flex; flex-direction: column; }
@@ -295,6 +304,14 @@ section.ai-scroll-section {
     padding: 4px 10px;
     transition: border-color 0.2s, color 0.2s;
 }
+
+.project-icon {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gray);
+    font-family: monospace;
+}
+
 .project-item:hover .tag { border-color: #555; color: var(--white); }
 
 /* About */
