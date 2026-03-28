@@ -24,14 +24,7 @@ export function initCursor() {
         el.addEventListener('mouseenter', () => {
             cursor.classList.add('cursor-hover');
 
-            // Add text depending on element
-            if (el.classList.contains('project-item')) {
-                cursor.textContent = 'VIEW';
-            } else if (el.tagName === 'A') {
-                cursor.textContent = 'OPEN';
-            } else {
-                cursor.textContent = 'GO';
-            }
+
         });
 
         el.addEventListener('mouseleave', () => {
