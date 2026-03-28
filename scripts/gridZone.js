@@ -12,7 +12,7 @@ export function initGridZone() {
     const COLS = 16;   // width of rectangle
     const ROWS = 12;   // height of rectangle
 
-    const START_X = 6; // position (right side anchor)
+    const START_X = 10; // position (right side anchor)
     const START_Y = -2;
 
 // controls how much edges break
