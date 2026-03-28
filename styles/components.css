@@ -34,25 +34,7 @@
 .cursor-click {
     transform: translate(-50%, -50%) scale(0.6);
 }
-/* Sections */
-section { padding: 100px 48px; border-bottom: var(--border); }
-.section-label {
-    font-size: 10px;
-    letter-spacing: 4px;
-    color: var(--gray);
-    text-transform: uppercase;
-    margin-bottom: 64px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-.section-label::before {
-    content: '';
-    display: inline-block;
-    width: 32px;
-    height: 1px;
-    background: var(--gray);
-}
+
 /* Grid zone */
 #grid-zone {
     position: absolute;
@@ -97,6 +79,122 @@ section { padding: 100px 48px; border-bottom: var(--border); }
             0 0 20px rgba(168, 85, 247, 0.8),
             0 0 40px rgba(168, 85, 247, 0.6);
 }
+
+/*cube*/
+.ascii-cube-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    pointer-events: none;
+    z-index: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#ascii-cube {
+    font-family: monospace;
+    font-size: 8px;
+    line-height: 8px;
+
+    color: rgba(200,180,255,0.9);
+
+    text-shadow:
+            0 0 4px rgba(168, 85, 247, 0.6),
+            0 0 10px rgba(168, 85, 247, 0.4),
+            0 0 20px rgba(168, 85, 247, 0.2);
+
+    letter-spacing: 1px;
+
+    text-align: center;
+    pointer-events: none;
+    filter: blur(0.3px);
+    transform: translateZ(0);
+    padding: 0 !important;
+    margin: 0 !important;
+
+
+}
+.ai-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 !important;
+    margin: 0 !important;
+
+}
+
+.ai-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    transform: translate(-130px);
+    overflow: visible;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.ai-right {
+
+    transform: translate(-50px, 40px);
+    flex: 1;
+    max-width: 600px;
+    z-index: 2;
+    overflow: visible;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/*Apple scroll*/
+/*
+.cube-anchor {
+    display: inline-block;
+}
+
+.ai-section {
+    transform-origin: center center;
+}
+
+.ai-left,
+.ai-right {
+    transform: none; !* VERY IMPORTANT *!
+}
+
+section.ai-scroll-section {
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+.ai-scroll-section {
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    height: 280vh; !* THIS controls scroll distance *!
+    position: relative;
+}
+
+
+.ai-scroll-inner {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: visible;
+}
+.ai-section {
+    padding: 0;
+    margin: 0;
+    transform-origin: center center;
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+}
+*/
+
 /* Skills */
 .skills-grid {
     display: grid;

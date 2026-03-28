@@ -102,3 +102,22 @@ nav {
     background-size: 60px 60px;
     pointer-events: none;
 }
+/* Sections */
+section { padding:100px 48px; border-bottom: var(--border); }
+.section-label {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--gray);
+    text-transform: uppercase;
+    margin-bottom: 64px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.section-label::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--gray);
+}

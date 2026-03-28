@@ -9,6 +9,7 @@ export function initGridAnimation() {
     });
 }
 
+// Gridzone stuff
 function spawnTile(cell) {
     const tile = document.createElement('div');
     tile.className = 'grid-tile';
