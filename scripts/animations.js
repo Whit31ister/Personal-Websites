@@ -3,7 +3,6 @@ export function initGridAnimation() {
 
     cells.forEach(cell => {
         cell.addEventListener('mouseenter', () => {
-            console.log('hove detected');
             spawnTile(cell);
         });
     });
@@ -39,18 +38,6 @@ function spawnTile(cell) {
             duration: 2000,
             easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
             fill: 'forwards'
-        }
-    );
-    tile.animate(
-        [
-            { filter: 'brightness(1)', offset: 0 },
-            { filter: 'brightness(1.4)', offset: 0.3 },
-            { filter: 'brightness(1.2)', offset: 0.7 },
-            { filter: 'brightness(1)', offset: 1 }
-        ],
-        {
-            duration: 2200, // match your main animation
-            easing: 'ease-out'
         }
     );
     // cleanup

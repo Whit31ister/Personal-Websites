@@ -4,19 +4,19 @@ export function initGridZone() {
     if (!zone) return;
 
     const SIZE = 80;
-    const RIGHT_OFFSET = window.innerWidth * -0.6;
+    const RIGHT_OFFSET = window.innerWidth * -0.45;
 
     // Define irregular pattern (like Render)
     const pattern = [];
 
     const COLS = 16;   // width of rectangle
-    const ROWS = 12;   // height of rectangle
+    const ROWS = 14;    // height of rectangle
 
     const START_X = 10; // position (right side anchor)
     const START_Y = -2;
 
 // controls how much edges break
-    const EDGE_NOISE = 0.7;
+    const EDGE_NOISE = 0.9;
 
     for (let row = 0; row < ROWS; row++) {
         for (let col = 0; col < COLS; col++) {
@@ -36,16 +36,18 @@ export function initGridZone() {
         }
     }
 
+    const fragment = document.createDocumentFragment();
+
     pattern.forEach(([col, row]) => {
         const cell = document.createElement('div');
         cell.className = 'grid-zone-cell';
-
-        const OFFSET_X = window.innerWidth; // adjust this
 
         cell.style.left = `calc(100vw - ${RIGHT_OFFSET}px - ${col * SIZE}px)`;
 
         cell.style.top = row * SIZE + 'px';
 
-        zone.appendChild(cell);
+        fragment.appendChild(cell);
     });
+
+    zone.appendChild(fragment);
 }
