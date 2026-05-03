@@ -1,20 +1,104 @@
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after {
+    box-sizing: border-box;
+}
 
 :root {
-    --black: #0A0A0A;
-    --white: #f5f5f0;
-    --gray: #888;
-    --border: 1px solid #222;
+    --desktop-blue: #0b3c99;
+    --desktop-teal: #087d7b;
+    --window-gray: #c0c0c0;
+    --window-light: #ffffff;
+    --window-mid: #9f9f9f;
+    --window-dark: #404040;
+    --title-active: #000080;
+    --title-inactive: #6f6f6f;
+    --ink: #111111;
+    --ink-muted: #343434;
+    --paper: #efefdf;
+    --green: #008000;
+    --terminal-blue: #00007f;
+    --terminal-green: #31d843;
+    --taskbar-height: 38px;
+    --chrome-font: "MS Sans Serif", Tahoma, "Segoe UI", Arial, sans-serif;
+    --mono-font: "IBM Plex Mono", "Courier New", monospace;
+    --desktop-background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.045) 0,
+            rgba(255, 255, 255, 0.045) 1px,
+            transparent 1px,
+            transparent 4px
+        ),
+        linear-gradient(135deg, var(--desktop-blue) 0%, var(--desktop-teal) 58%, #283f7c 100%);
+    --desktop-background-size: auto;
 }
 
-html { scroll-behavior: smooth; }
-* {
-    cursor: none !important;
+html {
+    min-height: 100%;
 }
+
 body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Space Mono', monospace;
-    overflow-x: hidden;
-    cursor: none;
+    min-height: 100vh;
+    margin: 0;
+    background: var(--desktop-teal);
+    color: var(--ink);
+    font-family: var(--chrome-font);
+    font-size: 13px;
+    line-height: 1.45;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--desktop-background);
+    background-size: var(--desktop-background-size);
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    color: #001a88;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #800000;
+}
+
+button {
+    border: 0;
+    background: none;
+}
+
+textarea {
+    resize: vertical;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+::selection {
+    background: #000080;
+    color: #ffffff;
+}
+
+@media (max-width: 780px) {
+    body {
+        overflow: auto;
+        overflow-x: hidden;
+        background: var(--desktop-teal);
+    }
 }

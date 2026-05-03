@@ -33,7 +33,7 @@ export function initReveal() {
         gsap.fromTo(bar,
             { width: 0 },
             {
-                width: bar.dataset.width + '%',
+                width: bar.dataset.level + '%',
                 duration: 0.6,
                 ease: "power1.out",
                 scrollTrigger: {

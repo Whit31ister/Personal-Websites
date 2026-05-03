@@ -3,11 +3,24 @@ export function initCursor() {
 
     if (!cursor) return;
 
+    let pointerX = 0;
+    let pointerY = 0;
+    let rafPending = false;
 
-    // ===== INSTANT FOLLOW (NO LAG) =====
+    function paintCursor() {
+        cursor.style.left = pointerX + 'px';
+        cursor.style.top = pointerY + 'px';
+        rafPending = false;
+    }
+
+    // ===== RAF-THROTTLED FOLLOW =====
     document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+        pointerX = e.clientX;
+        pointerY = e.clientY;
+        if (!rafPending) {
+            rafPending = true;
+            requestAnimationFrame(paintCursor);
+        }
     });
 
     // ===== CLICK FEEDBACK =====

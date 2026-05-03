@@ -1,5 +1,12 @@
 export const projectsData = [
     {
+        name: "Sample OS Testing 4748",
+        desc: "Low-level programming and operating systems development work focused on boot flow, memory layout, and kernel fundamentals.",
+        tags: ["OSDev", "C", "Low-Level"],
+        link: "https://github.com/Whit31ister/Sample-OS-testing-4748",
+        icon: "[OS]"
+    },
+    {
         name: "Cyphrus",
         desc: "A unified, terminal-driven interface for managing and interacting with locally hosted AI models.",
         tags: ["AI", "CLI", "Local Models"],
@@ -33,20 +40,6 @@ export const projectsData = [
         tags: ["Python", "CLI"],
         link: "#",
         icon: "[Py]"
-    },
-    {
-        name: "ThreadPool",
-        desc: "High-performance C++ thread pool with scheduling.",
-        tags: ["C++", "Multithreading"],
-        link: "#",
-        icon: "[||]"
-    },
-    {
-        name: "PortKit",
-        desc: "Minimalist developer portfolio kit.",
-        tags: ["Web", "UI"],
-        link: "#",
-        icon: "[UI]"
     }
 ];
 
