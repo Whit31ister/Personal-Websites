@@ -17,6 +17,8 @@
     --green: #008000;
     --terminal-blue: #00007f;
     --terminal-green: #31d843;
+    --accent-cyan: #40f4ff;
+    --accent-pink: #ff4fc9;
     --taskbar-height: 38px;
     --chrome-font: "MS Sans Serif", Tahoma, "Segoe UI", Arial, sans-serif;
     --mono-font: "IBM Plex Mono", "Courier New", monospace;
@@ -30,6 +32,9 @@
         ),
         linear-gradient(135deg, var(--desktop-blue) 0%, var(--desktop-teal) 58%, #283f7c 100%);
     --desktop-background-size: auto;
+    --desktop-aura:
+        radial-gradient(circle at 12% 18%, rgba(64, 244, 255, 0.14), transparent 26%),
+        radial-gradient(circle at 82% 72%, rgba(255, 79, 201, 0.11), transparent 28%);
 }
 
 html {
@@ -55,6 +60,17 @@ body::before {
     pointer-events: none;
     background: var(--desktop-background);
     background-size: var(--desktop-background-size);
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--desktop-aura);
+    mix-blend-mode: screen;
+    opacity: 0.85;
 }
 
 button,

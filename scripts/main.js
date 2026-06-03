@@ -13,17 +13,55 @@ import {
 const windowLabels = Object.fromEntries(apps.map((app) => [app.id, app.name]));
 const bootTime = Date.now();
 const builtins = [
-    "alias", "apps", "basename", "bc", "cal", "cat", "cd", "chmod", "chown", "clear", "cp", "curl",
-    "date", "df", "dirname", "du", "echo", "env", "explorer", "export", "file", "find", "free",
+    "alias", "apps", "basename", "bc", "cal", "cascade", "cat", "cd", "chmod", "chown", "clear", "cp", "curl",
+    "date", "de", "desktop", "df", "dirname", "du", "echo", "env", "environment", "explorer", "export", "file", "find", "free",
     "games", "git", "grep", "head", "help", "history", "hostname", "id", "kill", "less", "ln",
     "ls", "man", "mkdir", "mv", "nano", "neofetch", "open", "ping", "printenv", "projects",
     "pwd", "realpath", "reset", "resume", "rm", "rmdir", "seq", "skills", "sleep", "sort",
-    "stat", "tail", "terminal", "time", "top", "touch", "tree", "uname", "uniq", "uptime",
+    "stat", "tail", "terminal", "tile", "time", "top", "touch", "tree", "uname", "uniq", "uptime",
     "wc", "wallpaper", "widgets", "which", "whoami", "write", "yes"
+];
+const desktopEnvironments = {
+    gnome: {
+        id: "gnome",
+        name: "GNOME",
+        defaultWallpaper: "graphite",
+        startLabel: "Activities"
+    },
+    windows10: {
+        id: "windows10",
+        name: "Windows 10",
+        defaultWallpaper: "midnight",
+        startLabel: "Start"
+    },
+    windows98: {
+        id: "windows98",
+        name: "Windows 98",
+        defaultWallpaper: "aqua",
+        startLabel: "START"
+    },
+    macos: {
+        id: "macos",
+        name: "macOS",
+        defaultWallpaper: "forest",
+        startLabel: "Launchpad"
+    }
+};
+const bootSteps = [
+    "Initializing desktop shell",
+    "Mounting virtual filesystem",
+    "Loading applications",
+    "Applying display profile",
+    "Starting services"
 ];
 
 const state = {
     zIndex: 20,
+    booting: true,
+    notificationsEnabled: false,
+    hiddenWindows: [],
+    altTabIndex: 0,
+    desktopEnvironment: "windows98",
     explorerPath: profile.home,
     selectedFilePath: `${profile.home}/README.txt`,
     wallpaperIndex: 0,
@@ -35,7 +73,8 @@ const state = {
         aliases: {
             ll: "ls -la",
             la: "ls -a",
-            cls: "clear"
+            cls: "clear",
+            de: "environment"
         },
         env: {
             USER: profile.username,
@@ -73,8 +112,18 @@ const state = {
     }
 };
 
-function init() {
-    applyWallpaper(wallpapers[0].id);
+async function init() {
+    await runBootSequence();
+
+    const savedEnvironment = readPreference("white-os-environment");
+    const savedWallpaper = readPreference("white-os-wallpaper");
+    const environmentId = desktopEnvironments[savedEnvironment] ? savedEnvironment : "windows98";
+    const wallpaperId = wallpapers.some((wallpaper) => wallpaper.id === savedWallpaper)
+        ? savedWallpaper
+        : desktopEnvironments[environmentId].defaultWallpaper;
+
+    applyEnvironment(environmentId, { syncWallpaper: false, persist: false, silent: true });
+    applyWallpaper(wallpaperId, { persist: false, silent: true });
     renderProfile();
     renderProjects();
     renderSkills();
@@ -98,6 +147,7 @@ function init() {
     setupDisplay();
     setupUtilities();
     setupGames();
+    setupKeyboardShortcuts();
 
     updateClock();
     setInterval(updateClock, 30000);
@@ -105,6 +155,37 @@ function init() {
     setInterval(renderSystemLines, 3500);
 
     ["about", "projects", "terminal"].forEach(openWindow);
+    finishBootSequence();
+}
+
+async function runBootSequence() {
+    const log = document.getElementById("bootLog");
+    const meter = document.getElementById("bootMeter");
+    if (!log || !meter) return;
+
+    meter.style.width = "6%";
+    for (let index = 0; index < bootSteps.length; index += 1) {
+        const item = document.createElement("li");
+        item.textContent = `[....] ${bootSteps[index]}`;
+        log.appendChild(item);
+        log.scrollTop = log.scrollHeight;
+        await sleep(140);
+        item.textContent = `[ OK ] ${bootSteps[index]}`;
+        item.classList.add("is-ready");
+        meter.style.width = `${12 + ((index + 1) / bootSteps.length) * 82}%`;
+        await sleep(95);
+    }
+}
+
+function finishBootSequence() {
+    const screen = document.getElementById("bootScreen");
+    if (!screen) return;
+
+    screen.classList.add("is-done");
+    state.booting = false;
+    state.notificationsEnabled = true;
+    notify("System ready. Welcome to White OS.");
+    window.setTimeout(() => screen.setAttribute("hidden", ""), 370);
 }
 
 function getWindows() {
@@ -302,6 +383,17 @@ function renderWallpapers() {
     `).join("");
 }
 
+function renderEnvironments() {
+    const switcher = document.getElementById("environmentSwitch");
+    if (!switcher) return;
+
+    switcher.querySelectorAll("[data-environment]").forEach((button) => {
+        const selected = button.dataset.environment === state.desktopEnvironment;
+        button.classList.toggle("is-selected", selected);
+        button.setAttribute("aria-checked", selected ? "true" : "false");
+    });
+}
+
 function renderCalculator() {
     const display = document.getElementById("calcDisplay");
     const buttons = document.getElementById("calcButtons");
@@ -354,6 +446,15 @@ function setupWindowControls() {
     document.querySelectorAll("[data-window]").forEach((windowElement) => {
         windowElement.addEventListener("pointerdown", () => {
             activateWindow(windowElement.dataset.window);
+        });
+    });
+
+    document.querySelectorAll("[data-drag-handle]").forEach((handle) => {
+        handle.addEventListener("dblclick", (event) => {
+            if (event.target.closest(".window-controls")) return;
+            const windowElement = handle.closest("[data-window]");
+            if (!windowElement) return;
+            toggleMaximize(windowElement.dataset.window);
         });
     });
 
@@ -445,10 +546,7 @@ function setupStartMenu() {
 
     startButton.addEventListener("click", (event) => {
         event.stopPropagation();
-        const isOpen = !startMenu.hasAttribute("hidden");
-        startMenu.toggleAttribute("hidden", isOpen);
-        startButton.setAttribute("aria-expanded", String(!isOpen));
-        closeContextMenu();
+        toggleStartMenu();
     });
 
     document.addEventListener("pointerdown", (event) => {
@@ -476,7 +574,7 @@ function setupContextMenu() {
         event.preventDefault();
         closeStartMenu();
         const left = clamp(event.clientX, 4, window.innerWidth - 190);
-        const top = clamp(event.clientY, 4, window.innerHeight - 230);
+        const top = clamp(event.clientY, 4, window.innerHeight - 320);
         menu.style.left = `${left}px`;
         menu.style.top = `${top}px`;
         menu.removeAttribute("hidden");
@@ -584,10 +682,18 @@ function setupExplorer() {
 function setupDisplay() {
     const list = document.getElementById("wallpaperList");
     const cycle = document.getElementById("cycleWallpaper");
+    const environmentSwitch = document.getElementById("environmentSwitch");
     if (list) {
         list.addEventListener("click", (event) => {
             const item = event.target.closest("[data-wallpaper-id]");
             if (item) applyWallpaper(item.dataset.wallpaperId);
+        });
+    }
+    if (environmentSwitch) {
+        environmentSwitch.addEventListener("click", (event) => {
+            const option = event.target.closest("[data-environment]");
+            if (!option) return;
+            applyEnvironment(option.dataset.environment);
         });
     }
     cycle?.addEventListener("click", cycleWallpaper);
@@ -650,22 +756,185 @@ function setupGames() {
     document.getElementById("reactionTarget")?.addEventListener("click", hitReactionTarget);
 }
 
+function setupKeyboardShortcuts() {
+    document.addEventListener("keydown", (event) => {
+        const targetIsInput = event.target.closest("input, textarea");
+        if (targetIsInput && !(event.altKey && event.key === "Tab")) return;
+
+        if (event.ctrlKey && event.key === "`") {
+            event.preventDefault();
+            openWindow("terminal");
+            return;
+        }
+
+        if (event.ctrlKey && event.key === "Escape") {
+            event.preventDefault();
+            toggleStartMenu();
+            return;
+        }
+
+        if ((event.metaKey || (event.ctrlKey && event.shiftKey)) && event.key.toLowerCase() === "d") {
+            event.preventDefault();
+            toggleShowDesktop();
+            return;
+        }
+
+        if (event.altKey && event.key === "Tab") {
+            event.preventDefault();
+            cycleWindowFocus();
+            return;
+        }
+
+        if (event.altKey && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)) {
+            event.preventDefault();
+            snapActiveWindow(event.key);
+        }
+    });
+}
+
+function cycleWindowFocus() {
+    const openWindows = [...getWindows().entries()]
+        .filter(([, item]) => item.classList.contains("is-open") && !item.classList.contains("is-minimized"))
+        .sort((a, b) => Number(b[1].style.zIndex || 0) - Number(a[1].style.zIndex || 0));
+
+    if (!openWindows.length) return;
+    state.altTabIndex = (state.altTabIndex + 1) % openWindows.length;
+    const [windowId] = openWindows[state.altTabIndex];
+    activateWindow(windowId);
+    notify(`Switched to ${windowLabels[windowId] || windowId}`);
+}
+
+function snapActiveWindow(key) {
+    const active = [...getWindows().entries()].find(([, item]) => item.classList.contains("is-active") && item.classList.contains("is-open"));
+    const workspace = document.getElementById("workspace");
+    if (!active || !workspace || window.matchMedia("(max-width: 780px)").matches) return;
+
+    const [windowId, windowElement] = active;
+    const width = workspace.clientWidth;
+    const height = workspace.clientHeight;
+    windowElement.classList.remove("is-maximized");
+
+    if (key === "ArrowLeft") {
+        windowElement.style.left = "8px";
+        windowElement.style.top = "8px";
+        windowElement.style.width = `${Math.floor(width / 2) - 12}px`;
+        windowElement.style.maxHeight = `${height - 16}px`;
+        notify(`${windowLabels[windowId] || windowId} snapped left`);
+        return;
+    }
+
+    if (key === "ArrowRight") {
+        const targetWidth = Math.floor(width / 2) - 12;
+        windowElement.style.left = `${Math.ceil(width / 2) + 4}px`;
+        windowElement.style.top = "8px";
+        windowElement.style.width = `${targetWidth}px`;
+        windowElement.style.maxHeight = `${height - 16}px`;
+        notify(`${windowLabels[windowId] || windowId} snapped right`);
+        return;
+    }
+
+    if (key === "ArrowUp") {
+        windowElement.classList.add("is-maximized");
+        notify(`${windowLabels[windowId] || windowId} maximized`);
+        return;
+    }
+
+    if (key === "ArrowDown") {
+        minimizeWindow(windowId);
+        notify(`${windowLabels[windowId] || windowId} minimized`);
+    }
+}
+
+function tileOpenWindows() {
+    const workspace = document.getElementById("workspace");
+    if (!workspace || window.matchMedia("(max-width: 780px)").matches) return;
+
+    const openWindows = [...getWindows().values()].filter((item) => item.classList.contains("is-open"));
+    if (!openWindows.length) return;
+
+    const columns = Math.ceil(Math.sqrt(openWindows.length));
+    const rows = Math.ceil(openWindows.length / columns);
+    const tileWidth = Math.floor((workspace.clientWidth - 16) / columns) - 8;
+    const tileHeight = Math.floor((workspace.clientHeight - 16) / rows) - 8;
+
+    openWindows.forEach((windowElement, index) => {
+        const col = index % columns;
+        const row = Math.floor(index / columns);
+        windowElement.classList.remove("is-maximized", "is-minimized");
+        windowElement.style.left = `${8 + col * (tileWidth + 8)}px`;
+        windowElement.style.top = `${8 + row * (tileHeight + 8)}px`;
+        windowElement.style.width = `${Math.max(220, tileWidth)}px`;
+        windowElement.style.maxHeight = `${Math.max(180, tileHeight)}px`;
+    });
+    notify("Windows tiled");
+}
+
+function cascadeOpenWindows() {
+    const workspace = document.getElementById("workspace");
+    if (!workspace || window.matchMedia("(max-width: 780px)").matches) return;
+
+    const openWindows = [...getWindows().values()].filter((item) => item.classList.contains("is-open"));
+    if (!openWindows.length) return;
+
+    const baseWidth = Math.min(560, workspace.clientWidth - 32);
+    const baseHeight = Math.min(430, workspace.clientHeight - 32);
+    openWindows.forEach((windowElement, index) => {
+        const left = 24 + index * 28;
+        const top = 18 + index * 24;
+        windowElement.classList.remove("is-maximized", "is-minimized");
+        windowElement.style.left = `${Math.min(left, workspace.clientWidth - baseWidth - 12)}px`;
+        windowElement.style.top = `${Math.min(top, workspace.clientHeight - baseHeight - 12)}px`;
+        windowElement.style.width = `${baseWidth}px`;
+        windowElement.style.maxHeight = `${baseHeight}px`;
+    });
+    notify("Windows cascaded");
+}
+
+function toggleShowDesktop() {
+    const windows = getWindows();
+    if (!state.hiddenWindows.length) {
+        state.hiddenWindows = [...windows.entries()]
+            .filter(([, windowElement]) => windowElement.classList.contains("is-open") && !windowElement.classList.contains("is-minimized"))
+            .map(([id]) => id);
+        state.hiddenWindows.forEach((id) => minimizeWindow(id));
+        notify("Desktop shown");
+        return;
+    }
+
+    state.hiddenWindows.forEach((windowId) => {
+        const windowElement = getWindows().get(windowId);
+        if (!windowElement) return;
+        windowElement.classList.add("is-open");
+        windowElement.classList.remove("is-minimized");
+        windowElement.removeAttribute("hidden");
+        windowElement.removeAttribute("aria-hidden");
+    });
+    syncTaskbar();
+    state.hiddenWindows = [];
+    notify("Windows restored");
+}
+
 function handleContextAction(action) {
     if (action === "open-explorer") openWindow("explorer");
     if (action === "open-terminal") openWindow("terminal");
     if (action === "display") openWindow("display");
     if (action === "wallpaper-cycle") cycleWallpaper();
+    if (action === "tile-windows") tileOpenWindows();
+    if (action === "cascade-windows") cascadeOpenWindows();
+    if (action === "show-desktop") toggleShowDesktop();
     if (action === "refresh") {
         renderExplorer();
         renderWidgets();
         renderSystemLines();
         document.getElementById("workspace")?.classList.add("is-refreshing");
         window.setTimeout(() => document.getElementById("workspace")?.classList.remove("is-refreshing"), 180);
+        notify("Desktop refreshed");
     }
     if (action === "minimize-all") {
         getWindows().forEach((windowElement, windowId) => {
             if (windowElement.classList.contains("is-open")) minimizeWindow(windowId);
         });
+        notify("All windows minimized");
     }
 }
 
@@ -860,6 +1129,18 @@ function executeCommand(command, args, input = null) {
             return ["Opening GitHub profile..."];
         case "wallpaper":
             return commandWallpaper(args);
+        case "environment":
+        case "de":
+            return commandEnvironment(args);
+        case "tile":
+            tileOpenWindows();
+            return ["Windows tiled."];
+        case "cascade":
+            cascadeOpenWindows();
+            return ["Windows cascaded."];
+        case "desktop":
+            toggleShowDesktop();
+            return ["Toggled desktop view."];
         case "clear":
         case "reset":
         case "cls":
@@ -877,7 +1158,7 @@ function commandHelp(args) {
             wrapWords(builtins.join(" "), 76),
             "",
             "Try: ls -la, cd Projects, cat README.txt, grep -R kernel Projects, tree, find / -name '*.md',",
-            "     ps aux, df -h, free -m, git status, wallpaper list, open explorer"
+            "     ps aux, df -h, free -m, git status, wallpaper list, environment list, tile, cascade"
         ].flat();
     }
 
@@ -885,7 +1166,7 @@ function commandHelp(args) {
         "Common commands:",
         "ls cd pwd tree cat grep find touch mkdir rm cp mv echo clear history",
         "ps top df du free env export alias which file stat man neofetch",
-        "apps open wallpaper explorer games widgets utilities display github",
+        "apps open wallpaper environment tile cascade desktop explorer games widgets utilities display github",
         "Type 'help --all' for the full command list."
     ];
 }
@@ -897,6 +1178,11 @@ function commandMan(topic) {
         grep: "grep [-i] [-n] [-R] pattern [file|dir] - search text.",
         find: "find [path] [-name pattern] - recursively list files.",
         wallpaper: "wallpaper list|next|set <id> - control desktop wallpaper.",
+        environment: "environment list|set <id>|next - switch GNOME, Windows 10, Windows 98, or macOS shell.",
+        de: "Alias for environment.",
+        tile: "tile - arrange all open windows in a grid.",
+        cascade: "cascade - stack open windows with offset positions.",
+        desktop: "desktop - toggle show desktop (hide/restore windows).",
         open: "open <app|path> - open desktop apps or preview a file in Explorer.",
         shell: "This is a browser-hosted shell backed by a virtual filesystem."
     };
@@ -1304,6 +1590,34 @@ function commandWallpaper(args) {
     return ["Usage: wallpaper list|next|set <id>"];
 }
 
+function commandEnvironment(args) {
+    if (!args.length || args[0] === "list") {
+        return Object.values(desktopEnvironments)
+            .map((environment) => `${environment.id === state.desktopEnvironment ? "*" : " "} ${environment.id.padEnd(10)} ${environment.name}`);
+    }
+    if (args[0] === "set" || args[0] === "use") {
+        const target = args[1];
+        if (!target) return ["environment set: missing id"];
+        return commandEnvironment([target]);
+    }
+    if (args[0] === "next") {
+        const environments = Object.keys(desktopEnvironments);
+        const current = environments.indexOf(state.desktopEnvironment);
+        const next = environments[(current + 1) % environments.length];
+        applyEnvironment(next);
+        return [`Environment: ${desktopEnvironments[next].name}`];
+    }
+
+    const targetId = String(args[0]).toLowerCase();
+    const environment = desktopEnvironments[targetId];
+    if (!environment) {
+        return [`environment: unknown environment '${args[0]}'`, "Run 'environment list' for available ids."];
+    }
+
+    applyEnvironment(environment.id);
+    return [`Environment: ${environment.name}`];
+}
+
 function readMany(args) {
     if (!args.length) return [];
     return args.flatMap((arg) => {
@@ -1321,15 +1635,46 @@ function setExplorerPath(path) {
     renderExplorer();
 }
 
-function applyWallpaper(id) {
+function applyEnvironment(environmentId, options = {}) {
+    const environment = desktopEnvironments[environmentId];
+    if (!environment) return;
+
+    const { syncWallpaper = true, persist = true, silent = false } = options;
+    state.desktopEnvironment = environment.id;
+    document.body.dataset.environment = environment.id;
+
+    const startButton = document.getElementById("startButton");
+    if (startButton) {
+        startButton.textContent = environment.startLabel;
+    }
+
+    renderEnvironments();
+
+    if (syncWallpaper) {
+        applyWallpaper(environment.defaultWallpaper, { persist, silent: true });
+    }
+    if (persist) {
+        writePreference("white-os-environment", environment.id);
+    }
+    if (!silent && !state.booting) {
+        notify(`Environment: ${environment.name}`);
+    }
+}
+
+function applyWallpaper(id, options = {}) {
     const index = wallpapers.findIndex((wallpaper) => wallpaper.id === id);
     if (index < 0) return;
+    const { persist = true, silent = false } = options;
     const wallpaper = wallpapers[index];
     state.wallpaperIndex = index;
     document.documentElement.style.setProperty("--desktop-background", wallpaper.css);
     document.documentElement.style.setProperty("--desktop-background-size", wallpaper.size || "auto");
     document.getElementById("displayPreview")?.style.setProperty("--preview-background", wallpaper.css);
     renderWallpapers();
+    if (persist) {
+        writePreference("white-os-wallpaper", wallpaper.id);
+    }
+    if (!silent && !state.booting) notify(`Wallpaper set: ${wallpaper.name}`);
 }
 
 function cycleWallpaper() {
@@ -1550,12 +1895,15 @@ function openWindow(windowId) {
     const windows = getWindows();
     const windowElement = windows.get(windowId);
     if (!windowElement) return;
+    const wasOpen = windowElement.classList.contains("is-open") && !windowElement.classList.contains("is-minimized");
 
     windowElement.classList.add("is-open");
     windowElement.classList.remove("is-minimized");
     windowElement.removeAttribute("hidden");
     windowElement.removeAttribute("aria-hidden");
     activateWindow(windowId);
+    if (state.hiddenWindows.length) state.hiddenWindows = [];
+    if (!wasOpen) notify(`Opened ${windowLabels[windowId] || windowId}`);
 }
 
 function closeWindow(windowId) {
@@ -1567,6 +1915,7 @@ function closeWindow(windowId) {
     windowElement.setAttribute("aria-hidden", "true");
     syncTaskbar();
     activateLastOpenWindow(windowId);
+    notify(`Closed ${windowLabels[windowId] || windowId}`);
 }
 
 function minimizeWindow(windowId) {
@@ -1584,8 +1933,9 @@ function toggleMaximize(windowId) {
     const windowElement = getWindows().get(windowId);
     if (!windowElement) return;
 
-    windowElement.classList.toggle("is-maximized");
+    const maximized = windowElement.classList.toggle("is-maximized");
     activateWindow(windowId);
+    notify(`${windowLabels[windowId] || windowId} ${maximized ? "maximized" : "restored"}`);
 }
 
 function activateWindow(windowId) {
@@ -1667,6 +2017,16 @@ function updatePrompt() {
     if (prompt) prompt.textContent = getPrompt();
 }
 
+function toggleStartMenu() {
+    const startMenu = document.getElementById("startMenu");
+    const startButton = document.getElementById("startButton");
+    if (!startMenu) return;
+    const shouldOpen = startMenu.hasAttribute("hidden");
+    startMenu.toggleAttribute("hidden", !shouldOpen);
+    startButton?.setAttribute("aria-expanded", String(shouldOpen));
+    if (shouldOpen) closeContextMenu();
+}
+
 function closeStartMenu() {
     const startMenu = document.getElementById("startMenu");
     const startButton = document.getElementById("startButton");
@@ -1682,6 +2042,24 @@ function closeContextMenu() {
 
 function openExternal(url) {
     window.open(url, "_blank", "noopener,noreferrer");
+}
+
+function notify(message, timeout = 2200) {
+    if (!state.notificationsEnabled) return;
+    const rail = document.getElementById("notificationRail");
+    if (!rail) return;
+
+    const toast = document.createElement("div");
+    toast.className = "notification-toast";
+    toast.textContent = message;
+    rail.prepend(toast);
+
+    while (rail.children.length > 4) {
+        rail.lastElementChild?.remove();
+    }
+
+    window.setTimeout(() => toast.classList.add("is-exit"), Math.max(600, timeout - 240));
+    window.setTimeout(() => toast.remove(), timeout);
 }
 
 function getNode(path) {
@@ -1979,6 +2357,26 @@ function wrapWords(text, width) {
     });
     if (line.trim()) lines.push(line.trim());
     return lines;
+}
+
+function sleep(ms) {
+    return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function readPreference(key) {
+    try {
+        return localStorage.getItem(key) || "";
+    } catch {
+        return "";
+    }
+}
+
+function writePreference(key, value) {
+    try {
+        localStorage.setItem(key, value);
+    } catch {
+        // Storage can be blocked in some browser modes.
+    }
 }
 
 function setText(selector, value) {

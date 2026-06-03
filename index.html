@@ -11,6 +11,20 @@
   <link rel="stylesheet" href="styles/animations.css">
 </head>
 <body>
+  <div class="boot-screen" id="bootScreen" role="status" aria-live="polite">
+    <div class="boot-screen__panel">
+      <div class="boot-screen__logo" aria-label="White OS logo">
+        <span class="boot-mark" aria-hidden="true"></span>
+        <strong>WHITE.OS</strong>
+      </div>
+      <p class="boot-screen__subtitle">Desktop Portfolio Runtime</p>
+      <div class="boot-screen__meter" aria-hidden="true">
+        <i id="bootMeter"></i>
+      </div>
+      <ul class="boot-screen__log" id="bootLog"></ul>
+    </div>
+  </div>
+
   <div class="desktop" id="desktop">
     <main class="workspace" id="workspace" aria-label="White.dev desktop portfolio">
       <section class="desktop-icons" aria-label="Desktop shortcuts">
@@ -308,6 +322,13 @@
             <div class="display-preview__window"></div>
           </section>
           <section>
+            <h2 class="panel-heading">Desktop Environment</h2>
+            <div class="environment-switch" id="environmentSwitch" role="radiogroup" aria-label="Desktop environment">
+              <button class="environment-option" type="button" data-environment="gnome" role="radio" aria-checked="false">GNOME</button>
+              <button class="environment-option" type="button" data-environment="windows10" role="radio" aria-checked="false">Windows 10</button>
+              <button class="environment-option" type="button" data-environment="windows98" role="radio" aria-checked="false">Windows 98</button>
+              <button class="environment-option" type="button" data-environment="macos" role="radio" aria-checked="false">macOS</button>
+            </div>
             <h2 class="panel-heading">Wallpaper</h2>
             <div class="wallpaper-list" id="wallpaperList"></div>
             <div class="display-actions">
@@ -373,6 +394,10 @@
       <button type="button" role="menuitem" data-context-action="wallpaper-cycle">Next Wallpaper</button>
       <button type="button" role="menuitem" data-context-action="display">Properties</button>
       <hr>
+      <button type="button" role="menuitem" data-context-action="tile-windows">Tile Windows</button>
+      <button type="button" role="menuitem" data-context-action="cascade-windows">Cascade Windows</button>
+      <button type="button" role="menuitem" data-context-action="show-desktop">Show Desktop</button>
+      <hr>
       <button type="button" role="menuitem" data-context-action="minimize-all">Minimize All Windows</button>
     </div>
 
@@ -411,6 +436,8 @@
         <time id="clock" datetime="">--:--</time>
       </div>
     </nav>
+
+    <div class="notification-rail" id="notificationRail" aria-live="polite" aria-label="System notifications"></div>
   </div>
 
   <script type="module" src="scripts/main.js"></script>

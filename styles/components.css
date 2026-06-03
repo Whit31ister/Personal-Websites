@@ -1,3 +1,106 @@
+.boot-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 500;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background:
+        radial-gradient(circle at 20% 22%, rgba(64, 244, 255, 0.16), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(255, 79, 201, 0.14), transparent 30%),
+        linear-gradient(160deg, #081431 0%, #0a2a54 56%, #10203e 100%);
+    color: #d9ebff;
+}
+
+.boot-screen[hidden] {
+    display: none;
+}
+
+.boot-screen__panel {
+    width: min(560px, 100%);
+    padding: 18px;
+    background: rgba(9, 20, 46, 0.82);
+    border: 2px solid;
+    border-color: #9fd8ff #24446f #24446f #9fd8ff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.boot-screen__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono-font);
+    font-size: 26px;
+    color: #ffffff;
+}
+
+.boot-screen__logo strong {
+    line-height: 1;
+}
+
+.boot-mark {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, var(--accent-cyan), #4d91ff 52%, var(--accent-pink));
+    border: 2px solid #dbf4ff;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+.boot-screen__subtitle {
+    margin: 8px 0 12px;
+    font-family: var(--mono-font);
+    font-size: 12px;
+    color: #b5d4ff;
+}
+
+.boot-screen__meter {
+    height: 16px;
+    margin-bottom: 10px;
+    background: #060d1f;
+    border: 2px solid;
+    border-color: #20456c #8ac7ff #8ac7ff #20456c;
+}
+
+.boot-screen__meter i {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #1de7ff 0%, #6cc9ff 40%, #fe72d2 100%);
+    transition: width 190ms linear;
+}
+
+.boot-screen__log {
+    margin: 0;
+    padding-left: 17px;
+    max-height: 165px;
+    overflow: auto;
+    font-family: var(--mono-font);
+    font-size: 11px;
+    line-height: 1.55;
+}
+
+.boot-screen__log li {
+    color: #9cd6ff;
+}
+
+.boot-screen__log li.is-ready {
+    color: #8af4ad;
+}
+
+.notification-toast {
+    max-width: 100%;
+    padding: 8px 10px;
+    color: #0f1e35;
+    background: linear-gradient(180deg, #eff7ff 0%, #cfe5ff 100%);
+    border: 2px solid;
+    border-color: #ffffff #4d6789 #4d6789 #ffffff;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.32);
+    font-family: var(--mono-font);
+    font-size: 11px;
+    pointer-events: auto;
+}
+
 .desktop-icon {
     display: flex;
     flex-direction: column;
@@ -287,7 +390,7 @@
 
 .window {
     color: var(--ink);
-    background: var(--window-gray);
+    background: linear-gradient(180deg, #cecece 0%, #b7b7b7 100%);
     border: 2px solid;
     border-color: var(--window-light) var(--window-dark) var(--window-dark) var(--window-light);
     box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.42);
@@ -315,7 +418,8 @@
 }
 
 .window.is-active .window-titlebar {
-    background: var(--title-active);
+    background: linear-gradient(90deg, #000080 0%, #054f9f 50%, #0d74c6 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .window-titlebar h1 {
@@ -666,6 +770,10 @@
     font-size: 11px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.window.is-active {
+    box-shadow: 0 0 0 1px rgba(121, 228, 255, 0.55), 5px 6px 0 rgba(0, 0, 0, 0.46);
 }
 
 .start-menu__items button,
@@ -1231,10 +1339,56 @@
     border-color: var(--window-light) var(--window-dark) var(--window-dark) var(--window-light);
 }
 
+body[data-environment="windows10"] .display-preview__window {
+    border-radius: 4px;
+}
+
+body[data-environment="gnome"] .display-preview__window {
+    border-radius: 6px;
+    background: #2f3440;
+}
+
+body[data-environment="macos"] .display-preview__window {
+    border-radius: 9px;
+    border-color: #c5ccda;
+}
+
 .wallpaper-list {
     display: grid;
     gap: 6px;
     margin-bottom: 10px;
+}
+
+.environment-switch {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.environment-option {
+    min-height: 30px;
+    padding: 4px 8px;
+    color: #000000;
+    background: var(--paper);
+    border: 1px solid #8c8c78;
+    font-family: var(--mono-font);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.environment-option:hover,
+.environment-option:focus-visible {
+    color: #ffffff;
+    background: #000080;
+    outline: 0;
+}
+
+.environment-option.is-selected {
+    color: #ffffff;
+    background: linear-gradient(90deg, #0040a1 0%, #0068d6 100%);
+    border-color: #012f72;
 }
 
 .wallpaper-option {
@@ -1269,6 +1423,333 @@
     font-size: 11px;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+body[data-environment="windows98"] .start-menu__brand {
+    letter-spacing: 1px;
+}
+
+body[data-environment="windows10"] {
+    --chrome-font: "Segoe UI", Tahoma, Arial, sans-serif;
+    --mono-font: "Cascadia Mono", "IBM Plex Mono", "Courier New", monospace;
+    --window-gray: #d6deeb;
+    --window-light: #f9fdff;
+    --window-mid: #9aa6bd;
+    --window-dark: #4d5a6f;
+    --title-active: #0b57b0;
+    --title-inactive: #75839c;
+    --paper: #f0f4fa;
+    --ink-muted: #2d3849;
+    --terminal-blue: #0e1b2f;
+    --desktop-aura:
+        radial-gradient(circle at 18% 14%, rgba(106, 176, 255, 0.18), transparent 28%),
+        radial-gradient(circle at 80% 80%, rgba(102, 233, 255, 0.13), transparent 30%);
+}
+
+body[data-environment="windows10"] .taskbar {
+    background: linear-gradient(180deg, #1f2d45 0%, #121d31 100%);
+    border-top: 1px solid #38527c;
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.08);
+}
+
+body[data-environment="windows10"] .tray {
+    color: #dbe8ff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #0f1928 #4c6283 #4c6283 #0f1928;
+}
+
+body[data-environment="windows10"] .start-button,
+body[data-environment="windows10"] .taskbar-tab {
+    color: #ecf2ff;
+    background: linear-gradient(180deg, #2b4d82 0%, #1c2f54 100%);
+    border-color: #5a7eaf #111b2c #111b2c #5a7eaf;
+}
+
+body[data-environment="windows10"] .window {
+    border-radius: 4px;
+    box-shadow: 0 14px 32px rgba(10, 20, 36, 0.35);
+}
+
+body[data-environment="windows10"] .window::after {
+    border-color: #9fb0ca;
+}
+
+body[data-environment="windows10"] .window-titlebar {
+    border-radius: 2px 2px 0 0;
+}
+
+body[data-environment="windows10"] .window-control {
+    width: 22px;
+    height: 18px;
+}
+
+body[data-environment="windows10"] .start-menu,
+body[data-environment="windows10"] .context-menu {
+    background: #d9e2ef;
+    border-color: #f5fbff #62718a #62718a #f5fbff;
+}
+
+body[data-environment="windows10"] .start-menu__group {
+    background: #ecf2fa;
+}
+
+body[data-environment="windows10"] .start-menu__heading {
+    background: linear-gradient(90deg, #0f4ea6 0%, #1482d9 100%);
+}
+
+body[data-environment="windows10"] .start-menu__items button:hover,
+body[data-environment="windows10"] .start-menu__items a:hover,
+body[data-environment="windows10"] .start-menu__items button:focus-visible,
+body[data-environment="windows10"] .start-menu__items a:focus-visible,
+body[data-environment="windows10"] .context-menu button:hover,
+body[data-environment="windows10"] .context-menu button:focus-visible,
+body[data-environment="windows10"] .wallpaper-option:hover,
+body[data-environment="windows10"] .wallpaper-option.is-selected,
+body[data-environment="windows10"] .environment-option:hover,
+body[data-environment="windows10"] .environment-option.is-selected {
+    background: #0f66ca;
+}
+
+body[data-environment="gnome"] {
+    --chrome-font: "Cantarell", "Segoe UI", Arial, sans-serif;
+    --mono-font: "JetBrains Mono", "IBM Plex Mono", "Courier New", monospace;
+    --window-gray: #2f3440;
+    --window-light: #515867;
+    --window-mid: #3c4350;
+    --window-dark: #1f2229;
+    --title-active: #4d75e6;
+    --title-inactive: #4f5663;
+    --paper: #3a404d;
+    --ink: #e5ebf6;
+    --ink-muted: #c2cede;
+    --terminal-blue: #141926;
+    --desktop-aura:
+        radial-gradient(circle at 15% 22%, rgba(119, 100, 246, 0.2), transparent 26%),
+        radial-gradient(circle at 84% 74%, rgba(76, 158, 255, 0.16), transparent 34%);
+}
+
+body[data-environment="gnome"] .taskbar {
+    top: 0;
+    bottom: auto;
+    height: 34px;
+    background: rgba(17, 20, 28, 0.95);
+    border-top: 0;
+    border-bottom: 1px solid #485163;
+}
+
+body[data-environment="gnome"] .workspace {
+    padding-top: 46px;
+}
+
+body[data-environment="gnome"] .start-menu {
+    top: 34px;
+    bottom: auto;
+    border-radius: 0 0 8px 8px;
+}
+
+body[data-environment="gnome"] .start-button,
+body[data-environment="gnome"] .taskbar-tab,
+body[data-environment="gnome"] .tray,
+body[data-environment="gnome"] .window-control,
+body[data-environment="gnome"] .win-button {
+    color: #f3f6ff;
+    background: #353c4a;
+    border-color: #5a6272 #1e2128 #1e2128 #5a6272;
+}
+
+body[data-environment="gnome"] .window {
+    background: #2d3440;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.42);
+}
+
+body[data-environment="gnome"] .window-titlebar {
+    background: #4f5663;
+}
+
+body[data-environment="gnome"] .window-body,
+body[data-environment="gnome"] .panel-block,
+body[data-environment="gnome"] .utility-panel,
+body[data-environment="gnome"] .game-panel,
+body[data-environment="gnome"] .widget-card,
+body[data-environment="gnome"] .project-file,
+body[data-environment="gnome"] .resume-stat,
+body[data-environment="gnome"] .contact-item,
+body[data-environment="gnome"] .skill-row {
+    background: #3b4250;
+    color: #eaf0ff;
+    border-color: #5a6272;
+}
+
+body[data-environment="gnome"] .panel-heading,
+body[data-environment="gnome"] .panel-block h2,
+body[data-environment="gnome"] .explorer-preview h2,
+body[data-environment="gnome"] .utility-panel h2,
+body[data-environment="gnome"] .widget-card h2,
+body[data-environment="gnome"] .project-file__title,
+body[data-environment="gnome"] .resume-stat strong,
+body[data-environment="gnome"] .widget-card strong,
+body[data-environment="gnome"] .game-toolbar strong {
+    color: #c5d5ff;
+}
+
+body[data-environment="gnome"] .start-menu__group {
+    background: #3a414e;
+    border-color: #545d6d;
+}
+
+body[data-environment="gnome"] .start-menu__heading,
+body[data-environment="gnome"] .start-menu__items button:hover,
+body[data-environment="gnome"] .start-menu__items a:hover,
+body[data-environment="gnome"] .start-menu__items button:focus-visible,
+body[data-environment="gnome"] .start-menu__items a:focus-visible,
+body[data-environment="gnome"] .context-menu button:hover,
+body[data-environment="gnome"] .context-menu button:focus-visible,
+body[data-environment="gnome"] .explorer-tree button:hover,
+body[data-environment="gnome"] .explorer-tree button.is-selected,
+body[data-environment="gnome"] .file-row:hover,
+body[data-environment="gnome"] .file-row.is-selected,
+body[data-environment="gnome"] .wallpaper-option:hover,
+body[data-environment="gnome"] .wallpaper-option.is-selected,
+body[data-environment="gnome"] .environment-option:hover,
+body[data-environment="gnome"] .environment-option.is-selected {
+    background: #587de3;
+}
+
+body[data-environment="gnome"] .context-menu,
+body[data-environment="gnome"] .start-menu {
+    background: #2f3542;
+    border-color: #5a6272 #1f2229 #1f2229 #5a6272;
+}
+
+body[data-environment="macos"] {
+    --chrome-font: "SF Pro Text", "Segoe UI", Arial, sans-serif;
+    --mono-font: "SF Mono", "IBM Plex Mono", "Courier New", monospace;
+    --window-gray: #e4e7ef;
+    --window-light: #ffffff;
+    --window-mid: #c6ccd7;
+    --window-dark: #a3aaba;
+    --title-active: #d9deea;
+    --title-inactive: #c8cedb;
+    --paper: #f7f8fc;
+    --ink-muted: #495163;
+    --terminal-blue: #222632;
+    --desktop-aura:
+        radial-gradient(circle at 18% 12%, rgba(255, 203, 113, 0.18), transparent 26%),
+        radial-gradient(circle at 80% 76%, rgba(116, 203, 255, 0.17), transparent 30%);
+}
+
+body[data-environment="macos"] .taskbar {
+    left: 50%;
+    right: auto;
+    bottom: 8px;
+    width: min(760px, calc(100vw - 20px));
+    height: 42px;
+    padding: 5px 10px;
+    background: rgba(248, 250, 255, 0.72);
+    border-radius: 12px;
+    border: 1px solid rgba(132, 144, 166, 0.5);
+    backdrop-filter: blur(8px);
+    transform: translateX(-50%);
+    box-shadow: 0 12px 26px rgba(24, 29, 46, 0.3);
+}
+
+body[data-environment="macos"] .start-menu {
+    left: 12px;
+    bottom: 56px;
+    border-radius: 10px 10px 0 0;
+}
+
+body[data-environment="macos"] .start-menu,
+body[data-environment="macos"] .context-menu {
+    background: rgba(244, 247, 255, 0.9);
+    border-radius: 10px;
+    border-color: #d0d7e5 #aeb7ca #aeb7ca #d0d7e5;
+}
+
+body[data-environment="macos"] .start-menu__group {
+    border-radius: 8px;
+    border-color: #c8cfde;
+    background: #eff2fa;
+}
+
+body[data-environment="macos"] .start-menu__heading {
+    background: #d5dbea;
+    color: #3f4b5e;
+}
+
+body[data-environment="macos"] .start-menu__items button:hover,
+body[data-environment="macos"] .start-menu__items a:hover,
+body[data-environment="macos"] .start-menu__items button:focus-visible,
+body[data-environment="macos"] .start-menu__items a:focus-visible,
+body[data-environment="macos"] .context-menu button:hover,
+body[data-environment="macos"] .context-menu button:focus-visible,
+body[data-environment="macos"] .wallpaper-option:hover,
+body[data-environment="macos"] .wallpaper-option.is-selected,
+body[data-environment="macos"] .environment-option:hover,
+body[data-environment="macos"] .environment-option.is-selected {
+    background: #4a7de0;
+}
+
+body[data-environment="macos"] .taskbar-tabs {
+    justify-content: center;
+}
+
+body[data-environment="macos"] .start-button,
+body[data-environment="macos"] .taskbar-tab {
+    border-radius: 8px;
+    border: 1px solid #b0b8c7;
+    background: linear-gradient(180deg, #f7f9ff 0%, #e1e5ef 100%);
+}
+
+body[data-environment="macos"] .tray {
+    border-radius: 8px;
+}
+
+body[data-environment="macos"] .window {
+    border-radius: 8px;
+    border-color: #d1d6e2;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.22);
+}
+
+body[data-environment="macos"] .window::after {
+    display: none;
+}
+
+body[data-environment="macos"] .window-titlebar {
+    color: #2e3747;
+    background: linear-gradient(180deg, #eceff6 0%, #d4dae7 100%);
+    border-radius: 6px 6px 0 0;
+}
+
+body[data-environment="macos"] .window-controls {
+    flex-direction: row-reverse;
+}
+
+body[data-environment="macos"] .window-control {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    box-shadow: none;
+}
+
+body[data-environment="macos"] .window-minimize {
+    background: #f6bf26;
+}
+
+body[data-environment="macos"] .window-maximize {
+    background: #62c455;
+}
+
+body[data-environment="macos"] .window-close {
+    background: #ff5f57;
+}
+
+body[data-environment="macos"] .window-minimize::before,
+body[data-environment="macos"] .window-maximize::before,
+body[data-environment="macos"] .window-close::before,
+body[data-environment="macos"] .window-close::after {
+    content: none;
 }
 
 .terminal-body {
@@ -1373,6 +1854,19 @@
 
     .taskbar-tab {
         flex-basis: 88px;
+    }
+
+    body[data-environment="macos"] .taskbar {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: auto;
+        border-radius: 0;
+        transform: none;
+    }
+
+    body[data-environment="gnome"] .workspace {
+        padding-top: 44px;
     }
 }
 

@@ -60,6 +60,18 @@
     z-index: 260;
 }
 
+.notification-rail {
+    position: fixed;
+    right: 10px;
+    bottom: calc(var(--taskbar-height) + 10px);
+    z-index: 240;
+    display: grid;
+    justify-items: end;
+    gap: 8px;
+    width: min(320px, calc(100vw - 20px));
+    pointer-events: none;
+}
+
 .taskbar {
     position: fixed;
     right: 0;
@@ -224,6 +236,12 @@
     .taskbar-tabs {
         gap: 3px;
         padding: 0 4px;
+    }
+
+    .notification-rail {
+        right: 6px;
+        left: 6px;
+        width: auto;
     }
 
     .tray span {
