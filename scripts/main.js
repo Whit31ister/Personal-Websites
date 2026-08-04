@@ -95,7 +95,7 @@ async function typeText(target, text) {
 
 async function eraseText(target) {
   for (let index = target.textContent.length; index >= 0; index -= 1) {
-    await waitWithPause(100);
+    await waitWithPause(70);
     target.textContent = target.textContent.slice(0, index);
   }
 }
@@ -108,7 +108,7 @@ async function runTitleCycle(container, target) {
     container.className = `section-heading title-cycle ${fontClass}`;
 
     await typeText(target, titleText);
-    await waitWithPause(900);
+    await waitWithPause(9000);
     await eraseText(target);
     await waitWithPause(200);
 

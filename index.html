@@ -37,16 +37,36 @@
           </h1>
           <img class="pfp" src="assets/images/pfp.jpg" alt="Whitelister profile picture">
         </div>
-        <p class="lead">
-          I build simple software with a low-contrast, low-noise feel. The focus is on structure, clarity, and quiet motion.
+        <p class="lead about-dropcap">
+          <span class="dropcap" aria-hidden="true">
+            <span class="dropcap__frame"></span>
+            <span class="dropcap__frame dropcap__frame--inner"></span>
+            <span class="dropcap__texture"></span>
+            <span class="dropcap__medallion"></span>
+            <span class="dropcap__orbit dropcap__orbit--one"></span>
+            <span class="dropcap__orbit dropcap__orbit--two"></span>
+            <span class="dropcap__orbit dropcap__orbit--three"></span>
+            <span class="dropcap__corner dropcap__corner--tl"></span>
+            <span class="dropcap__corner dropcap__corner--tr"></span>
+            <span class="dropcap__corner dropcap__corner--bl"></span>
+            <span class="dropcap__corner dropcap__corner--br"></span>
+            <span class="dropcap__filigree dropcap__filigree--one"></span>
+            <span class="dropcap__filigree dropcap__filigree--two"></span>
+            <span class="dropcap__filigree dropcap__filigree--three"></span>
+            <span class="dropcap__filigree dropcap__filigree--four"></span>
+            <span class="dropcap__filigree dropcap__filigree--five"></span>
+            <span class="dropcap__scroll dropcap__scroll--one"></span>
+            <span class="dropcap__scroll dropcap__scroll--two"></span>
+            <span class="dropcap__scroll dropcap__scroll--three"></span>
+            <span class="dropcap__scroll dropcap__scroll--four"></span>
+            <span class="dropcap__sprig dropcap__sprig--one"></span>
+            <span class="dropcap__sprig dropcap__sprig--two"></span>
+            <span class="dropcap__glyph">B</span>
+          </span>uilding simple software with a low-contrast, low-noise feel. The focus is on structure, clarity, and quiet motion.
         </p>
         <p>
-          I work across systems, web, mobile, and security-adjacent problems. The preference is always the same:
-          remove clutter, keep the layout honest, and let the content do the work.
-        </p>
-        <p>
-          I like interfaces that read quickly, hold up on small screens, and stay out of the way once the user starts moving.
-          The goal is less decoration and more precision.
+          I work in cybersecurity, machine learning, and Android development. I keep my focus on the practical side of
+          those areas. I prefer straightforward interfaces and simple implementation.
         </p>
       </section>
 
@@ -77,23 +97,39 @@
         <div class="project-list">
           <article class="project-item">
             <h2>Kernel Guard</h2>
-            <p>A lightweight security monitor for Linux systems that tracks suspicious process trees, privilege escalations, and config drift.</p>
+            <div class="project-meta">
+              <p><span>Tech stack</span> C · Python · Linux · Bash · procfs</p>
+              <p><span>Key advantages</span> Low overhead · quick detection · clear signal output</p>
+              <p><span>Problem statement</span> Small Linux systems often miss lightweight process monitoring without adding heavy agents.</p>
+              <p><span>Solution</span> Built a lean local monitor that watches process trees, privilege changes, and config drift with simple alerts.</p>
+            </div>
           </article>
           <article class="project-item">
             <h2>Rust Vault</h2>
-            <p>An encrypted notes and secrets manager built in Rust with local-first storage, fast search, and offline-safe sync logic.</p>
+            <div class="project-meta">
+              <p><span>Tech stack</span> Rust · encrypted local storage · search index · offline sync</p>
+              <p><span>Key advantages</span> Memory safety · local-first workflow · fast retrieval</p>
+              <p><span>Problem statement</span> Secrets and notes tools are often either too heavy or too dependent on cloud sync.</p>
+              <p><span>Solution</span> Designed a local-first encrypted vault with quick search and offline-safe synchronization logic.</p>
+            </div>
           </article>
           <article class="project-item">
             <h2>Signal Lab</h2>
-            <p>A machine learning sandbox for experimenting with small models, feature extraction, and dataset cleanup pipelines.</p>
+            <div class="project-meta">
+              <p><span>Tech stack</span> Python · ML tooling · data preprocessing · feature extraction</p>
+              <p><span>Key advantages</span> Fast experimentation · reusable pipelines · cleaner datasets</p>
+              <p><span>Problem statement</span> It is easy to waste time rebuilding the same model experimentation flow for each dataset.</p>
+              <p><span>Solution</span> Created a reusable sandbox for small models, feature engineering, and dataset cleanup pipelines.</p>
+            </div>
           </article>
           <article class="project-item">
             <h2>Droid Flow</h2>
-            <p>An Android productivity app in Kotlin with modular architecture, offline persistence, and a clean gesture-driven UI.</p>
-          </article>
-          <article class="project-item">
-            <h2>ASM Trace</h2>
-            <p>A low-level tooling project for inspecting compiled output, profiling hot paths, and comparing binary behavior across builds.</p>
+            <div class="project-meta">
+              <p><span>Tech stack</span> Kotlin · Android · modular architecture · offline storage</p>
+              <p><span>Key advantages</span> Clean structure · responsive UX · offline usability</p>
+              <p><span>Problem statement</span> Many mobile productivity apps become cluttered once features start accumulating.</p>
+              <p><span>Solution</span> Built a modular Android app with offline persistence and a gesture-driven interface that stays simple.</p>
+            </div>
           </article>
         </div>
       </section>
