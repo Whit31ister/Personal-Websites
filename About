@@ -1,0 +1,6 @@
+styles/site.css:77:.section__label {
+styles/site.css:200:.about-dropcap::first-letter {
+styles/site.css:367:  .about-dropcap::first-letter {
+index.html:31:        <p class="section__label">About</p>
+index.html:40:        <p class="lead about-dropcap">
+index.html:41:          Building simple software with a low-contrast, low-noise feel. The focus is on structure, clarity, and quiet motion.
