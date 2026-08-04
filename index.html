@@ -3,443 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="White.dev retro desktop portfolio with projects, apps, games, widgets, terminal, GitHub, and contact links.">
-  <title>White.dev Desktop</title>
-  <link rel="stylesheet" href="styles/base.css">
-  <link rel="stylesheet" href="styles/layout.css">
-  <link rel="stylesheet" href="styles/components.css">
-  <link rel="stylesheet" href="styles/animations.css">
+  <meta name="description" content="Whitelister — minimal portfolio.">
+  <title>Whitelister — Portfolio</title>
+  <script>
+    (function () {
+      try {
+        const saved = localStorage.getItem("whitelister-theme");
+        const theme = saved === "day" || saved === "night"
+          ? saved
+          : (window.matchMedia("(prefers-color-scheme: light)").matches ? "day" : "night");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (error) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Bebas+Neue&family=Abril+Fatface&family=Unbounded:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
-  <div class="boot-screen" id="bootScreen" role="status" aria-live="polite">
-    <div class="boot-screen__panel">
-      <div class="boot-screen__logo" aria-label="White OS logo">
-        <span class="boot-mark" aria-hidden="true"></span>
-        <strong>WHITE.OS</strong>
-      </div>
-      <p class="boot-screen__subtitle">Desktop Portfolio Runtime</p>
-      <div class="boot-screen__meter" aria-hidden="true">
-        <i id="bootMeter"></i>
-      </div>
-      <ul class="boot-screen__log" id="bootLog"></ul>
-    </div>
-  </div>
+  <button class="theme-toggle" type="button" id="themeToggle" aria-label="Toggle day and night mode" aria-pressed="false">
+    <span class="theme-toggle__icon" aria-hidden="true">☾</span>
+  </button>
 
-  <div class="desktop" id="desktop">
-    <main class="workspace" id="workspace" aria-label="White.dev desktop portfolio">
-      <section class="desktop-icons" aria-label="Desktop shortcuts">
-        <button class="desktop-icon" type="button" data-open="about">
-          <span class="desktop-icon__glyph icon-file" aria-hidden="true"></span>
-          <span class="desktop-icon__label">About</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="projects">
-          <span class="desktop-icon__glyph icon-folder" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Projects</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="explorer">
-          <span class="desktop-icon__glyph icon-folder icon-folder--open" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Explorer</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="terminal">
-          <span class="desktop-icon__glyph icon-terminal" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Terminal</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="utilities">
-          <span class="desktop-icon__glyph icon-toolbox" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Utilities</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="games">
-          <span class="desktop-icon__glyph icon-game" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Games</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="widgets">
-          <span class="desktop-icon__glyph icon-widget" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Widgets</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="display">
-          <span class="desktop-icon__glyph icon-monitor" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Display</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="skills">
-          <span class="desktop-icon__glyph icon-chip" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Skills</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="resume">
-          <span class="desktop-icon__glyph icon-document" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Resume</span>
-        </button>
-        <button class="desktop-icon" type="button" data-open="contact">
-          <span class="desktop-icon__glyph icon-mail" aria-hidden="true"></span>
-          <span class="desktop-icon__label">Contact</span>
-        </button>
-        <a class="desktop-icon" href="https://github.com/Whit31ister" target="_blank" rel="noreferrer">
-          <span class="desktop-icon__glyph icon-github" aria-hidden="true"></span>
-          <span class="desktop-icon__label">GitHub</span>
-        </a>
+  <main class="content">
+      <section class="section hero-section" id="about">
+        <p class="section__label">About</p>
+        <div class="hero-head">
+          <button class="title-toggle" type="button" id="titleToggle" aria-label="Pause title animation" aria-pressed="false">▶</button>
+          <h1 class="section-heading title-cycle title-font-1" id="titleCycle">
+            <span class="title-text" id="titleText"></span>
+            <span class="title-caret" aria-hidden="true">_</span>
+          </h1>
+          <img class="pfp" src="assets/images/pfp.jpg" alt="Whitelister profile picture">
+        </div>
+        <p class="lead">
+          I build simple software with a low-contrast, low-noise feel. The focus is on structure, clarity, and quiet motion.
+        </p>
+        <p>
+          I work across systems, web, mobile, and security-adjacent problems. The preference is always the same:
+          remove clutter, keep the layout honest, and let the content do the work.
+        </p>
+        <p>
+          I like interfaces that read quickly, hold up on small screens, and stay out of the way once the user starts moving.
+          The goal is less decoration and more precision.
+        </p>
       </section>
 
-      <section class="window is-open is-active" id="window-about" data-window="about" aria-labelledby="title-about" style="left: 28px; top: 24px; width: 560px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-about">ABOUT_ME.TXT</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize About"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize About"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close About"></button>
+      <section class="section" id="skills">
+        <h2 class="section-heading">Skills</h2>
+        <div class="stack-list">
+          <div class="stack-row">
+            <span>Languages</span>
+            <p>C · C++ · ASM · Python · Kotlin · Rust · JavaScript · React</p>
           </div>
-        </header>
-        <div class="window-body about-grid">
-          <article class="panel-block">
-            <h2>Profile</h2>
-            <p data-profile-summary></p>
+          <div class="stack-row">
+            <span>Cybersecurity</span>
+            <p>Security tooling · hardening · threat analysis · system awareness</p>
+          </div>
+          <div class="stack-row">
+            <span>Machine Learning</span>
+            <p>Experimentation · data work · practical prototypes</p>
+          </div>
+          <div class="stack-row">
+            <span>Android Dev</span>
+            <p>Kotlin · mobile UI · app structure · clean flows</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="projects">
+        <h2 class="section-heading">Projects</h2>
+        <div class="project-list">
+          <article class="project-item">
+            <h2>Kernel Guard</h2>
+            <p>A lightweight security monitor for Linux systems that tracks suspicious process trees, privilege escalations, and config drift.</p>
           </article>
-          <article class="panel-block system-card">
-            <h2>System Status</h2>
-            <dl class="kv-list">
-              <div>
-                <dt>Name</dt>
-                <dd data-profile-name></dd>
-              </div>
-              <div>
-                <dt>Email</dt>
-                <dd><a data-profile-email href="#">Loading</a></dd>
-              </div>
-              <div>
-                <dt>GitHub</dt>
-                <dd><a data-profile-github href="#" target="_blank" rel="noreferrer">Loading</a></dd>
-              </div>
-              <div>
-                <dt>Status</dt>
-                <dd><span class="status-pill">ONLINE</span></dd>
-              </div>
-            </dl>
+          <article class="project-item">
+            <h2>Rust Vault</h2>
+            <p>An encrypted notes and secrets manager built in Rust with local-first storage, fast search, and offline-safe sync logic.</p>
           </article>
-          <article class="panel-block about-wide">
-            <h2>Focus</h2>
-            <ul class="compact-list" id="focusList"></ul>
+          <article class="project-item">
+            <h2>Signal Lab</h2>
+            <p>A machine learning sandbox for experimenting with small models, feature extraction, and dataset cleanup pipelines.</p>
+          </article>
+          <article class="project-item">
+            <h2>Droid Flow</h2>
+            <p>An Android productivity app in Kotlin with modular architecture, offline persistence, and a clean gesture-driven UI.</p>
+          </article>
+          <article class="project-item">
+            <h2>ASM Trace</h2>
+            <p>A low-level tooling project for inspecting compiled output, profiling hot paths, and comparing binary behavior across builds.</p>
           </article>
         </div>
       </section>
 
-      <section class="window is-open" id="window-projects" data-window="projects" aria-labelledby="title-projects" style="left: 48px; top: 394px; width: 590px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-projects">PROJECTS.DIR</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Projects"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Projects"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Projects"></button>
-          </div>
-        </header>
-        <div class="window-body">
-          <div class="directory-toolbar">
-            <span>C:\WHITE\PROJECTS</span>
-            <span id="projectCount">0 objects</span>
-          </div>
-          <div class="project-browser" id="projectsList"></div>
-        </div>
-      </section>
 
-      <section class="window is-open terminal-window" id="window-terminal" data-window="terminal" aria-labelledby="title-terminal" style="left: 50%; top: 196px; width: 460px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-terminal">TERMINAL_V4.0.EXE</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Terminal"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Terminal"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Terminal"></button>
-          </div>
-        </header>
-        <div class="window-body terminal-body">
-          <div class="terminal-output" id="terminalOutput" aria-live="polite"></div>
-          <form class="terminal-input-row" id="terminalForm">
-            <label id="terminalPrompt" for="terminalInput">white@white-os:~$</label>
-            <input id="terminalInput" name="command" autocomplete="off" spellcheck="false" aria-label="Terminal command">
-          </form>
-        </div>
-      </section>
-
-      <section class="window" id="window-explorer" data-window="explorer" aria-labelledby="title-explorer" hidden style="left: 236px; top: 88px; width: 650px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-explorer">FILE_EXPLORER.EXE</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Explorer"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Explorer"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Explorer"></button>
-          </div>
-        </header>
-        <div class="window-menu" aria-label="Explorer menu">
-          <button type="button" data-explorer-nav="/">File</button>
-          <button type="button" data-explorer-nav="/home/white">Home</button>
-          <button type="button" data-explorer-nav="/home/white/Projects">Projects</button>
-          <button type="button" data-open="terminal">Tools</button>
-          <button type="button" data-open="display">View</button>
-        </div>
-        <div class="window-body explorer-body">
-          <div class="explorer-toolbar">
-            <button class="win-button" type="button" id="explorerUp">Up</button>
-            <label for="explorerPath">Address</label>
-            <input id="explorerPath" spellcheck="false" value="/">
-            <button class="win-button" type="button" id="explorerGo">Go</button>
-          </div>
-          <div class="explorer-layout">
-            <aside class="explorer-tree" id="explorerTree" aria-label="Folders"></aside>
-            <section class="explorer-files" id="explorerFiles" aria-label="Files"></section>
-            <aside class="explorer-preview" id="explorerPreview" aria-label="Preview"></aside>
-          </div>
-        </div>
-      </section>
-
-      <section class="window" id="window-utilities" data-window="utilities" aria-labelledby="title-utilities" hidden style="left: 660px; top: 42px; width: 560px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-utilities">UTILITIES.CPL</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Utilities"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Utilities"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Utilities"></button>
-          </div>
-        </header>
-        <div class="window-menu" aria-label="Utilities menu">
-          <button type="button" data-utility-focus="calculator">Calculator</button>
-          <button type="button" data-utility-focus="notepad">Notepad</button>
-          <button type="button" data-utility-focus="run">Run</button>
-          <button type="button" data-utility-focus="system">System</button>
-        </div>
-        <div class="window-body utility-grid">
-          <section class="utility-panel" id="utility-calculator">
-            <h2>Calculator</h2>
-            <input id="calcDisplay" class="calc-display" readonly value="0">
-            <div class="calc-buttons" id="calcButtons" aria-label="Calculator buttons"></div>
-          </section>
-          <section class="utility-panel" id="utility-notepad">
-            <h2>Notepad</h2>
-            <textarea id="notePad" spellcheck="false">Notes stay in this browser tab until reload.</textarea>
-          </section>
-          <section class="utility-panel" id="utility-run">
-            <h2>Run</h2>
-            <div class="run-row">
-              <input id="runInput" spellcheck="false" placeholder="explorer, terminal, display, games">
-              <button class="win-button" type="button" id="runButton">Run</button>
-            </div>
-            <p class="utility-hint" id="runStatus">Type an app name or terminal command.</p>
-          </section>
-          <section class="utility-panel" id="utility-system">
-            <h2>System Monitor</h2>
-            <div id="utilitySystem" class="system-lines"></div>
-          </section>
-        </div>
-      </section>
-
-      <section class="window" id="window-games" data-window="games" aria-labelledby="title-games" hidden style="left: 676px; top: 356px; width: 500px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-games">GAMES.DIR</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Games"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Games"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Games"></button>
-          </div>
-        </header>
-        <div class="window-menu" aria-label="Games menu">
-          <button type="button" data-game-view="snake">Snake</button>
-          <button type="button" data-game-view="mines">Mines</button>
-          <button type="button" data-game-view="reaction">Reaction</button>
-        </div>
-        <div class="window-body games-body">
-          <section class="game-panel" data-game-panel="snake">
-            <div class="game-toolbar">
-              <strong>Snake</strong>
-              <span id="snakeStatus">Ready</span>
-              <button class="win-button" type="button" id="snakeStart">Start</button>
-              <button class="win-button" type="button" id="snakeReset">Reset</button>
-            </div>
-            <div class="snake-board" id="snakeBoard" tabindex="0" aria-label="Snake board"></div>
-            <div class="direction-pad" aria-label="Snake controls">
-              <button class="win-button" type="button" data-snake-dir="up">Up</button>
-              <button class="win-button" type="button" data-snake-dir="left">Left</button>
-              <button class="win-button" type="button" data-snake-dir="down">Down</button>
-              <button class="win-button" type="button" data-snake-dir="right">Right</button>
-            </div>
-          </section>
-          <section class="game-panel" data-game-panel="mines">
-            <div class="game-toolbar">
-              <strong>Mines</strong>
-              <span id="mineStatus">Find the safe squares.</span>
-              <button class="win-button" type="button" id="mineReset">New</button>
-            </div>
-            <div class="mine-board" id="mineBoard" aria-label="Mines board"></div>
-          </section>
-          <section class="game-panel" data-game-panel="reaction">
-            <div class="game-toolbar">
-              <strong>Reaction</strong>
-              <span id="reactionStatus">Press Start.</span>
-              <button class="win-button" type="button" id="reactionStart">Start</button>
-            </div>
-            <button class="reaction-target" type="button" id="reactionTarget">WAIT</button>
-          </section>
-        </div>
-      </section>
-
-      <section class="window" id="window-widgets" data-window="widgets" aria-labelledby="title-widgets" hidden style="left: 760px; top: 98px; width: 390px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-widgets">WIDGETS.DLL</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Widgets"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Widgets"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Widgets"></button>
-          </div>
-        </header>
-        <div class="window-body widgets-grid">
-          <article class="widget-card">
-            <h2>Clock</h2>
-            <strong id="widgetClock">--:--</strong>
-            <span id="widgetDate">Loading</span>
-          </article>
-          <article class="widget-card">
-            <h2>Calendar</h2>
-            <div class="calendar-grid" id="calendarGrid"></div>
-          </article>
-          <article class="widget-card">
-            <h2>Resources</h2>
-            <div class="resource-line"><span>CPU</span><div class="resource-meter"><i id="cpuMeter"></i></div></div>
-            <div class="resource-line"><span>MEM</span><div class="resource-meter"><i id="memMeter"></i></div></div>
-            <div class="resource-line"><span>NET</span><div class="resource-meter"><i id="netMeter"></i></div></div>
-          </article>
-          <article class="widget-card">
-            <h2>Sticky Notes</h2>
-            <ul id="widgetNotes"></ul>
-          </article>
-        </div>
-      </section>
-
-      <section class="window" id="window-display" data-window="display" aria-labelledby="title-display" hidden style="left: 320px; top: 150px; width: 520px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-display">DISPLAY.CPL</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Display"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Display"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Display"></button>
-          </div>
-        </header>
-        <div class="window-body display-body">
-          <section class="display-preview" id="displayPreview">
-            <div class="display-preview__window"></div>
-          </section>
-          <section>
-            <h2 class="panel-heading">Desktop Environment</h2>
-            <div class="environment-switch" id="environmentSwitch" role="radiogroup" aria-label="Desktop environment">
-              <button class="environment-option" type="button" data-environment="gnome" role="radio" aria-checked="false">GNOME</button>
-              <button class="environment-option" type="button" data-environment="windows10" role="radio" aria-checked="false">Windows 10</button>
-              <button class="environment-option" type="button" data-environment="windows98" role="radio" aria-checked="false">Windows 98</button>
-              <button class="environment-option" type="button" data-environment="macos" role="radio" aria-checked="false">macOS</button>
-            </div>
-            <h2 class="panel-heading">Wallpaper</h2>
-            <div class="wallpaper-list" id="wallpaperList"></div>
-            <div class="display-actions">
-              <button class="win-button" type="button" id="cycleWallpaper">Cycle</button>
-              <button class="win-button" type="button" data-context-action="refresh">Refresh</button>
-            </div>
-          </section>
-        </div>
-      </section>
-
-      <section class="window" id="window-skills" data-window="skills" aria-labelledby="title-skills" hidden style="left: 740px; top: 42px; width: 460px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-skills">SKILLS.CPL</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Skills"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Skills"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Skills"></button>
-          </div>
-        </header>
-        <div class="window-body">
-          <div class="skill-list" id="skillsList"></div>
-        </div>
-      </section>
-
-      <section class="window" id="window-contact" data-window="contact" aria-labelledby="title-contact" hidden style="left: 768px; top: 382px; width: 420px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-contact">CONTACT.LNK</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Contact"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Contact"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Contact"></button>
-          </div>
-        </header>
-        <div class="window-body">
-          <div class="contact-stack" id="contactLinks"></div>
-        </div>
-      </section>
-
-      <section class="window" id="window-resume" data-window="resume" aria-labelledby="title-resume" hidden style="left: 310px; top: 96px; width: 470px;">
-        <header class="window-titlebar" data-drag-handle>
-          <h1 id="title-resume">RESUME.SYS</h1>
-          <div class="window-controls" aria-label="Window controls">
-            <button type="button" class="window-control window-minimize" data-action="minimize" aria-label="Minimize Resume"></button>
-            <button type="button" class="window-control window-maximize" data-action="maximize" aria-label="Maximize Resume"></button>
-            <button type="button" class="window-control window-close" data-action="close" aria-label="Close Resume"></button>
-          </div>
-        </header>
-        <div class="window-body">
-          <div class="resume-grid" id="resumeStats"></div>
-          <div class="panel-block resume-note">
-            <h2>Current Track</h2>
-            <p data-current-track></p>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <div class="context-menu" id="contextMenu" hidden role="menu" aria-label="Desktop context menu">
-      <button type="button" role="menuitem" data-context-action="open-explorer">Open Explorer</button>
-      <button type="button" role="menuitem" data-context-action="open-terminal">Open Terminal</button>
-      <button type="button" role="menuitem" data-context-action="refresh">Refresh</button>
-      <hr>
-      <button type="button" role="menuitem" data-context-action="wallpaper-cycle">Next Wallpaper</button>
-      <button type="button" role="menuitem" data-context-action="display">Properties</button>
-      <hr>
-      <button type="button" role="menuitem" data-context-action="tile-windows">Tile Windows</button>
-      <button type="button" role="menuitem" data-context-action="cascade-windows">Cascade Windows</button>
-      <button type="button" role="menuitem" data-context-action="show-desktop">Show Desktop</button>
-      <hr>
-      <button type="button" role="menuitem" data-context-action="minimize-all">Minimize All Windows</button>
-    </div>
-
-    <div class="start-menu" id="startMenu" hidden>
-      <div class="start-menu__brand">WHITE.DEV</div>
-      <div class="start-menu__items">
-        <div class="start-menu__group">
-          <div class="start-menu__heading">Programs</div>
-          <button type="button" data-open="explorer">File Explorer</button>
-          <button type="button" data-open="terminal">Terminal</button>
-          <button type="button" data-open="utilities">Utilities</button>
-          <button type="button" data-open="games">Games</button>
-          <button type="button" data-open="widgets">Widgets</button>
-        </div>
-        <div class="start-menu__group">
-          <div class="start-menu__heading">Portfolio</div>
-          <button type="button" data-open="about">About</button>
-          <button type="button" data-open="projects">Projects</button>
-          <button type="button" data-open="skills">Skills</button>
-          <button type="button" data-open="resume">Resume</button>
-          <button type="button" data-open="contact">Contact</button>
-        </div>
-        <div class="start-menu__group">
-          <div class="start-menu__heading">Settings</div>
-          <button type="button" data-open="display">Display</button>
+      <footer class="footer">
+        <span>© <span id="year"></span> Whitelister</span>
+        <div class="footer-socials" aria-label="Social links">
           <a href="https://github.com/Whit31ister" target="_blank" rel="noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/veer-raj-kanwar-7766653b9/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href="https://x.com/VeerRajKan40602" target="_blank" rel="noreferrer">Twitter</a>
+          <a>Discord: whitelist3r</a>
+          <a href="mailto:whiterlister@gmail.com">Email</a>
         </div>
-      </div>
-    </div>
+      </footer>
+  </main>
 
-    <nav class="taskbar" aria-label="Desktop taskbar">
-      <button class="start-button" type="button" id="startButton">START</button>
-      <div class="taskbar-tabs" id="taskbarTabs" aria-label="Open windows"></div>
-      <div class="tray" aria-label="System tray">
-        <span>WHITE-OS</span>
-        <time id="clock" datetime="">--:--</time>
-      </div>
-    </nav>
-
-    <div class="notification-rail" id="notificationRail" aria-live="polite" aria-label="System notifications"></div>
-  </div>
-
-  <script type="module" src="scripts/main.js"></script>
+  <script src="scripts/main.js" defer></script>
 </body>
 </html>
